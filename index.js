@@ -96,7 +96,23 @@ async function run() {
       console.log('creating new user', newUser);
       const result = await userCollection.insertOne(newUser);
       res.send(result);
+    });
+
+
+    app.patch('/users', async (req, res) => {
+      const email = req.body.email;
+      const filter = {email};
+      const updatedDoc = {
+        $set: {
+          lastSignInTime: req.body?.lastSignInTime
+        }
+      }
+
+      const result = await userCollection.updateOne(filter, updatedDoc);
+      res.send(result);
     })
+
+
 
     
     app.delete('/users/:id', async (req, res) => {
